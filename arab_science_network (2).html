@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>شبكة العلوم العربية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700;900&family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --dark: #0a0f1e;
+      --dark2: #111827;
+      --dark3: #1a2235;
+      --text: #f0ede5;
+      --text-muted: #a0956e;
+      --fb: #1877f2;
+      --li: #0a66c2;
+      --yt: #ff0000;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+    }
+
+    /* Starfield background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(201,168,76,0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(10,102,194,0.08) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background: white;
+      animation: twinkle var(--d) ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: 0.1; transform: scale(1); }
+      to   { opacity: 0.8; transform: scale(1.3); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 520px;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      animation: fadeDown 0.8s ease both;
+    }
+
+    .logo-ring {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+      box-shadow: 0 0 30px rgba(201,168,76,0.3), inset 0 0 20px rgba(201,168,76,0.05);
+      animation: rotateSlow 20s linear infinite;
+    }
+
+    .logo-ring::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px dashed rgba(201,168,76,0.3);
+    }
+
+    .logo-emoji {
+      font-size: 38px;
+      animation: rotateSlow 20s linear infinite reverse;
+    }
+
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    h1 {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 900;
+      font-size: 28px;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), #a07830);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+    }
+
+    /* Divider */
+    .divider {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeIn 0.8s 0.2s ease both;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .divider-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    /* Links */
+    .links-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 16px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      animation: slideIn 0.6s ease both;
+    }
+
+    .link-card:nth-child(1) { animation-delay: 0.3s; }
+    .link-card:nth-child(2) { animation-delay: 0.45s; }
+    .link-card:nth-child(3) { animation-delay: 0.6s; }
+
+    .link-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,168,76,0.06), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .link-card:hover {
+      border-color: rgba(201,168,76,0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4), 0 0 20px rgba(201,168,76,0.1);
+    }
+
+    .link-card:hover::before { opacity: 1; }
+
+    .icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .fb-card .icon-wrap { background: rgba(24,119,242,0.2); border: 1px solid rgba(24,119,242,0.3); }
+    .li-card .icon-wrap { background: rgba(10,102,194,0.2); border: 1px solid rgba(10,102,194,0.3); }
+    .yt-card .icon-wrap { background: rgba(255,0,0,0.15); border: 1px solid rgba(255,0,0,0.3); }
+
+    .link-info {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .link-platform {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .link-name {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--text);
+    }
+
+    .arrow {
+      color: var(--gold);
+      font-size: 18px;
+      opacity: 0.6;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+
+    .link-card:hover .arrow {
+      opacity: 1;
+      transform: translateX(-4px);
+    }
+
+    /* QR Section */
+    .qr-section {
+      width: 100%;
+      background: var(--dark3);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 20px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      animation: fadeIn 0.8s 0.8s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(201,168,76,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .qr-label {
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      color: var(--gold-light);
+      text-align: center;
+    }
+
+    .qr-sublabel {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: -12px;
+    }
+
+    #qrcode {
+      background: white;
+      padding: 14px;
+      border-radius: 16px;
+      box-shadow: 0 0 40px rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #qrcode img, #qrcode canvas {
+      display: block;
+      border-radius: 4px;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      animation: fadeIn 1s 1s ease both;
+    }
+
+    /* Animations */
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Stars -->
+  <div class="stars" id="stars"></div>
+
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-ring">
+        <span class="logo-emoji">🔬</span>
+      </div>
+      <h1>شبكة العلوم العربية</h1>
+      <p class="subtitle">Arab Science Network — تواصل معنا على منصاتنا</p>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- Links -->
+    <div class="links-section">
+      <a class="link-card fb-card" href="https://www.facebook.com/profile.php?id=61581398600046" target="_blank">
+        <div class="icon-wrap">📘</div>
+        <div class="link-info">
+          <div class="link-platform">Facebook</div>
+          <div class="link-name">شبكة العلوم العربية</div>
+        </div>
+        <div class="arrow">←</div>
+      </a>
+
+      <a class="link-card li-card" href="https://www.linkedin.com/in/arab-science-network-715a503a9/" target="_blank">
+        <div class="icon-wrap">💼</div>
+        <div class="link-info">
+          <div class="link-platform">LinkedIn</div>
+          <div class="link-name">شبكة العلوم العربية</div>
+        </div>
+        <div class="arrow">←</div>
+      </a>
+
+      <a class="link-card yt-card" href="https://www.youtube.com/@ArabScienceNetwork-z9w" target="_blank">
+        <div class="icon-wrap">▶️</div>
+        <div class="link-info">
+          <div class="link-platform">YouTube</div>
+          <div class="link-name">شبكة العلوم العربية</div>
+        </div>
+        <div class="arrow">←</div>
+      </a>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- QR Code -->
+    <div class="qr-section">
+      <div class="qr-label">📲 امسح الباركود للوصول لهذه الصفحة</div>
+      <p class="qr-sublabel">شارك الباركود مع الآخرين للوصول لجميع روابطنا</p>
+      <div id="qrcode"></div>
+    </div>
+
+    <div class="footer">
+      © شبكة العلوم العربية — Arab Science Network
+    </div>
+
+  </div>
+
+  <script>
+    // Generate stars
+    const starsEl = document.getElementById('stars');
+    for (let i = 0; i < 80; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width: ${size}px; height: ${size}px;
+        top: ${Math.random() * 100}%; left: ${Math.random() * 100}%;
+        --d: ${Math.random() * 4 + 2}s;
+        animation-delay: ${Math.random() * 4}s;
+      `;
+      starsEl.appendChild(s);
+    }
+
+    // Generate QR code pointing to this page itself
+    // Since this is a local file, we generate a QR for a data URL that encodes the page URL
+    // We'll use the page's own URL or a placeholder
+    const pageURL = "https://cosmic-marshmallow-fbc2b1.netlify.app";
+
+    new QRCode(document.getElementById("qrcode"), {
+      text: pageURL,
+      width: 200,
+      height: 200,
+      colorDark: "#0a0f1e",
+      colorLight: "#ffffff",
+      correctLevel: QRCode.CorrectLevel.H
+    });
+  </script>
+</body>
+</html>
